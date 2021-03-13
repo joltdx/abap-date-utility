@@ -6,6 +6,9 @@ CLASS zcl_date_utility DEFINITION
   PUBLIC SECTION.
     INTERFACES zif_date_utility.
 
+    "! <p class="shorttext synchronized" lang="en">Generate a new date utility object</p>
+    "!
+    "! @parameter date | <p class="shorttext synchronized" lang="en">Optional initial date. Current local date if not specified</p>
     METHODS constructor
       IMPORTING
         date TYPE d OPTIONAL.
