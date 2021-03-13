@@ -8,7 +8,8 @@ CLASS zcl_date_utility DEFINITION
 
     "! <p class="shorttext synchronized" lang="en">Generate a new date utility object</p>
     "!
-    "! @parameter date | <p class="shorttext synchronized" lang="en">Optional initial date. Current local date if not specified</p>
+    "! @parameter date | <p class="shorttext synchronized" lang="en">Optional initial date.
+    "! Current local date if not specified</p>
     METHODS constructor
       IMPORTING
         date TYPE d OPTIONAL.
