@@ -10,9 +10,28 @@ CLASS ltc_date_utility DEFINITION FOR TESTING
     DATA m_cut TYPE REF TO zif_date_utility.
     METHODS setup.
 
-    METHODS set_the_date_with_set_method FOR TESTING RAISING cx_static_check.
-    METHODS set_the_date_with_constructor FOR TESTING RAISING cx_static_check.
+    METHODS set_date_with_set_method FOR TESTING RAISING cx_static_check.
+    METHODS set_date_with_constructor FOR TESTING RAISING cx_static_check.
     METHODS default_date_with_constructor FOR TESTING RAISING cx_static_check.
+    METHODS set_invalid_date FOR TESTING RAISING cx_static_check.
+
+    METHODS add_1_day_to_date FOR TESTING RAISING cx_static_check.
+    METHODS add_1_day_into_next_month FOR TESTING RAISING cx_static_check.
+    METHODS add_1_day_into_next_year FOR TESTING RAISING cx_static_check.
+    METHODS add_1_day_to_leap_day FOR TESTING RAISING cx_static_check.
+    METHODS add_negative_1_day_to_date FOR TESTING RAISING cx_static_check.
+
+    METHODS add_1_month_to_date FOR TESTING RAISING cx_static_check.
+    METHODS add_1_month_into_next_year FOR TESTING RAISING cx_static_check.
+    METHODS add_1_month_to_end_of_month30 FOR TESTING RAISING cx_static_check.
+    METHODS add_1_month_to_end_of_month31 FOR TESTING RAISING cx_static_check.
+    METHODS add_1_month_to_end_of_july FOR TESTING RAISING cx_static_check.
+    METHODS add_1_month_to_end_of_january FOR TESTING RAISING cx_static_check.
+    METHODS add_1_month_to_end_of_jan_leap FOR TESTING RAISING cx_static_check.
+    METHODS add_1_month_to_end_of_february FOR TESTING RAISING cx_static_check.
+
+    METHODS add_1_year_to_date FOR TESTING RAISING cx_static_check.
+
 ENDCLASS.
 
 CLASS ltc_date_utility IMPLEMENTATION.
@@ -21,7 +40,7 @@ CLASS ltc_date_utility IMPLEMENTATION.
     m_cut = NEW zcl_date_utility( ).
   ENDMETHOD.
 
-  METHOD set_the_date_with_set_method.
+  METHOD set_date_with_set_method.
 
     m_cut->set( '20210329' ).
 
@@ -31,7 +50,7 @@ CLASS ltc_date_utility IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD set_the_date_with_constructor.
+  METHOD set_date_with_constructor.
 
     DATA cut TYPE REF TO zif_date_utility.
     cut = NEW zcl_date_utility( '20200329' ).
@@ -47,6 +66,184 @@ CLASS ltc_date_utility IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
         act = m_cut->get( )
         exp = sy-datlo ).
+
+  ENDMETHOD.
+
+  METHOD set_invalid_date.
+
+    m_cut->set( '20200242' ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '00010102' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_day_to_date.
+
+    m_cut->set( '20210314' ).
+
+    m_cut->add_days( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20210315' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_day_into_next_month.
+
+    m_cut->set( '20210331' ).
+
+    m_cut->add_days( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20210401' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_day_into_next_year.
+
+    m_cut->set( '20211231' ).
+
+    m_cut->add_days( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20220101' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_day_to_leap_day.
+
+    m_cut->set( '20200228' ).
+
+    m_cut->add_days( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20200229' ).
+
+  ENDMETHOD.
+
+  METHOD add_negative_1_day_to_date.
+
+    m_cut->set( '20210704' ).
+
+    m_cut->add_days( -1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20210703' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_month_to_date.
+
+    m_cut->set( '20210609' ).
+
+    m_cut->add_months( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20210709' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_month_into_next_year.
+
+    m_cut->set( '20211217' ).
+
+    m_cut->add_months( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20220117' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_year_to_date.
+
+    m_cut->set( '20210919' ).
+
+    m_cut->add_years( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20220919' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_month_to_end_of_month31.
+
+    m_cut->set( '20210331' ).
+
+    m_cut->add_months( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20210430' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_month_to_end_of_month30.
+
+    m_cut->set( '20210430' ).
+
+    m_cut->add_months( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20210531' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_month_to_end_of_january.
+
+    m_cut->set( '20210131' ).
+
+    m_cut->add_months( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20210228' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_month_to_end_of_february.
+
+    m_cut->set( '20210228' ).
+
+    m_cut->add_months( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20210331' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_month_to_end_of_july.
+
+    m_cut->set( '20210731' ).
+
+    m_cut->add_months( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20210831' ).
+
+  ENDMETHOD.
+
+  METHOD add_1_month_to_end_of_jan_leap.
+
+    m_cut->set( '20200131' ).
+
+    m_cut->add_months( 1 ).
+
+    cl_abap_unit_assert=>assert_equals(
+        act = m_cut->get( )
+        exp = '20200229' ).
 
   ENDMETHOD.
 
