@@ -97,10 +97,7 @@ CLASS zcl_date_utility IMPLEMENTATION.
   METHOD zif_date_utility~add_months.
 
     DATA(month) = the_date+4(2).
-
-    DATA(next_day) = CONV d( the_date + 1 ).
     DATA(end_of_month) = is_end_of_month( the_date ).
-
     DATA(target_month) = month + months.
     DATA(years_to_add) = ( target_month - 1 ) DIV 12.
     DATA(new_month) = ( ( target_month - 1 ) MOD 12 ) + 1.
