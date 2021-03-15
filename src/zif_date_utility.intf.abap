@@ -9,7 +9,10 @@ INTERFACE zif_date_utility
   "! If an invalid date is passed, the system will <strong>NOT</strong> be in error but instead set the first valid
   "! date according to ABAP, i.e. 00010102.</p>
   METHODS set
-    IMPORTING date TYPE d.
+    IMPORTING
+      date                TYPE d
+    RETURNING
+      VALUE(date_utility) TYPE REF TO zif_date_utility.
 
   "! <p class="shorttext synchronized" lang="en">Get the date</p>
   "!

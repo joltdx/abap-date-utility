@@ -84,6 +84,8 @@ CLASS zcl_date_utility IMPLEMENTATION.
       the_date = the_date + 1.
     ENDIF.
 
+    date_utility = me.
+
   ENDMETHOD.
 
   METHOD zif_date_utility~add_days.
@@ -96,8 +98,9 @@ CLASS zcl_date_utility IMPLEMENTATION.
 
   METHOD zif_date_utility~add_months.
 
-    DATA(month) = the_date+4(2).
     DATA(end_of_month) = is_end_of_month( the_date ).
+
+    DATA(month) = the_date+4(2).
     DATA(target_month) = month + months.
     DATA(years_to_add) = ( target_month - 1 ) DIV 12.
     DATA(new_month) = ( ( target_month - 1 ) MOD 12 ) + 1.
@@ -118,11 +121,19 @@ CLASS zcl_date_utility IMPLEMENTATION.
 
   METHOD zif_date_utility~add_years.
 
+    DATA(end_of_month) = is_end_of_month( the_date ).
+
     DATA(year) = the_date+0(4).
 
     year = year + years.
 
     the_date+0(4) = year.
+
+    IF end_of_month = abap_true.
+      the_date = get_as_end_of_month( the_date ).
+    ENDIF.
+
+    date_utility = me.
 
   ENDMETHOD.
 
